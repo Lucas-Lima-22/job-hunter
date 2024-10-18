@@ -42,7 +42,7 @@ Route::get('/candidates/{candidate}/applications', [CandidateController::class, 
 Route::get('/candidates/{candidate}/edit', [CandidateController::class, 'edit'])->can('update', 'candidate');
 Route::put('/candidates/{candidate}', [CandidateController::class, 'update'])->can('update', 'candidate');
 
-Route::post('/applications', [ApplicationController::class, 'store'])->can('create', Application::class);
+Route::post('/applications', [ApplicationController::class, 'store'])->middleware('auth');
 Route::put('/applications/{application}', [ApplicationController::class, 'update'])->can('update', 'application');
 Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->can('delete', 'application');
 

@@ -1,10 +1,10 @@
 <script setup>
-import { Link } from '@inertiajs/vue3'
-import IconField from '@/Components/IconField.vue'
+import { Link } from '@inertiajs/vue3';
+import IconField from '@/Components/IconField.vue';
 
 defineProps({
     candidate: Object,
-})
+});
 </script>
 <template>
     <Head>

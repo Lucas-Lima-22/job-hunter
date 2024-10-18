@@ -1,19 +1,24 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
+import { useTheme } from '@/Composables/useTheme';
 import Notification from '@/Components/Notification.vue';
-import themeManager from '@/utils/themeManager';
 
+const { theme, url } = useTheme();
 const user = computed(() => usePage().props.auth.user);
 const component = computed(() => usePage().component);
 const message = computed(() => usePage().props.message);
-const theme = ref(null);
-const url = ref(null);
 
 onMounted(() => {
-    themeManager.setValues(theme, url);
-    themeManager.updateThemeBasedOnLocalStorage();
-    themeManager.initializeThemeObserver();
+    document.querySelectorAll('.dropdown-option').forEach((item) => {
+        item.addEventListener('click', () => {
+            const dropdown = item.closest('.dropdown');
+            const focusedElement = dropdown.querySelector(':focus');
+            if (focusedElement) {
+                focusedElement.blur();
+            }
+        });
+    });
 });
 </script>
 
@@ -69,17 +74,17 @@ onMounted(() => {
                         </svg>
                     </label>
                 </button>
-                <li>
+                <li class="dropdown-option">
                     <Link href="/" class="btn btn-ghost">
                         <span class="flex-1 text-start">Home</span>
                     </Link>
                 </li>
-                <li>
+                <li class="dropdown-option">
                     <Link href="/jobs" class="btn btn-ghost">
                         <span class="flex-1 text-start">Jobs</span>
                     </Link>
                 </li>
-                <li>
+                <li class="dropdown-option">
                     <Link href="/companies" class="btn btn-ghost">
                         <span class="flex-1 text-start">Companies</span>
                     </Link>
@@ -185,7 +190,7 @@ onMounted(() => {
                         v-if="user?.role_id === 1"
                         class="menu w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
                     >
-                        <li>
+                        <li class="dropdown-option">
                             <Link
                                 :href="`/candidates/${user.candidate.id}`"
                                 class="btn btn-ghost gap-4"
@@ -198,7 +203,10 @@ onMounted(() => {
                                 </span>
                             </Link>
                         </li>
-                        <li v-if="user.candidate.is_active">
+                        <li
+                            class="dropdown-option"
+                            v-if="user.candidate.is_active"
+                        >
                             <Link
                                 :href="`/candidates/${user.candidate.id}/applications`"
                                 class="btn btn-ghost gap-4"
@@ -209,7 +217,7 @@ onMounted(() => {
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        <li class="dropdown-option">
                             <Link
                                 :href="`/users/${user.id}/edit`"
                                 class="btn btn-ghost gap-4"
@@ -222,7 +230,7 @@ onMounted(() => {
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        <li class="dropdown-option">
                             <Link
                                 href="/logout"
                                 as="button"
@@ -238,7 +246,7 @@ onMounted(() => {
                         v-else-if="user?.role_id === 2"
                         class="menu w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
                     >
-                        <li>
+                        <li class="dropdown-option">
                             <Link
                                 :href="`/companies/${user.company.id}`"
                                 class="btn btn-ghost gap-4"
@@ -252,7 +260,10 @@ onMounted(() => {
                             </Link>
                         </li>
 
-                        <li v-if="user.company.is_active">
+                        <li
+                            class="dropdown-option"
+                            v-if="user.company.is_active"
+                        >
                             <Link
                                 :href="`/companies/${user.company.id}/jobs`"
                                 class="btn btn-ghost gap-4"
@@ -263,7 +274,10 @@ onMounted(() => {
                                 </span>
                             </Link>
                         </li>
-                        <li v-if="user.company.is_active">
+                        <li
+                            class="dropdown-option"
+                            v-if="user.company.is_active"
+                        >
                             <Link
                                 :href="`/companies/${user.company.id}/applications`"
                                 class="btn btn-ghost gap-4"
@@ -274,7 +288,7 @@ onMounted(() => {
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        <li class="dropdown-option">
                             <Link
                                 :href="`/users/${user.id}/edit`"
                                 class="btn btn-ghost gap-4"
@@ -287,7 +301,7 @@ onMounted(() => {
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        <li class="dropdown-option">
                             <Link
                                 href="/logout"
                                 as="button"
@@ -303,13 +317,13 @@ onMounted(() => {
                         v-else
                         class="menu w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
                     >
-                        <li>
+                        <li class="dropdown-option">
                             <Link href="/login" class="btn btn-ghost gap-4">
                                 <i class="material-symbols-rounded"> login </i>
                                 <span class="flex-1 text-start"> Login </span>
                             </Link>
                         </li>
-                        <li>
+                        <li class="dropdown-option">
                             <Link href="/sign-up" class="btn btn-ghost gap-4">
                                 <i class="material-symbols-rounded">
                                     person_add
