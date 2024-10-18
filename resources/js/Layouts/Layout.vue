@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { useTheme } from '@/Composables/useTheme';
+import { useDropdownContent } from '@/Composables/useDropdownContent';
 import Notification from '@/Components/Notification.vue';
 
 const { theme, url } = useTheme();
@@ -9,17 +10,7 @@ const user = computed(() => usePage().props.auth.user);
 const component = computed(() => usePage().component);
 const message = computed(() => usePage().props.message);
 
-onMounted(() => {
-    document.querySelectorAll('.dropdown-option').forEach((item) => {
-        item.addEventListener('click', () => {
-            const dropdown = item.closest('.dropdown');
-            const focusedElement = dropdown.querySelector(':focus');
-            if (focusedElement) {
-                focusedElement.blur();
-            }
-        });
-    });
-});
+useDropdownContent(user);
 </script>
 
 <template>
@@ -132,8 +123,12 @@ onMounted(() => {
 
                 <div class="divider divider-horizontal mx-0 py-4" />
             </div>
-            <div class="dropdown dropdown-end dropdown-hover sm:px-4">
-                <div tabindex="0" class="mask mask-squircle size-12 bg-neutral">
+            <div class="dropdown dropdown-end sm:px-4">
+                <div
+                    tabindex="0"
+                    role="button"
+                    class="mask mask-squircle size-12 bg-neutral"
+                >
                     <div v-if="user?.role_id === 1" class="size-full">
                         <img
                             v-if="user.candidate.avatar"
@@ -185,11 +180,11 @@ onMounted(() => {
                     </div>
                 </div>
 
-                <div tabindex="0" class="dropdown-content pt-4">
-                    <ul
-                        v-if="user?.role_id === 1"
-                        class="menu w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
-                    >
+                <div
+                    tabindex="0"
+                    class="dropdown-content mt-4 w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
+                >
+                    <ul v-if="user?.role_id === 1" class="menu">
                         <li class="dropdown-option">
                             <Link
                                 :href="`/candidates/${user.candidate.id}`"
@@ -242,10 +237,7 @@ onMounted(() => {
                             </Link>
                         </li>
                     </ul>
-                    <ul
-                        v-else-if="user?.role_id === 2"
-                        class="menu w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
-                    >
+                    <ul v-else-if="user?.role_id === 2" class="menu">
                         <li class="dropdown-option">
                             <Link
                                 :href="`/companies/${user.company.id}`"
@@ -313,10 +305,7 @@ onMounted(() => {
                             </Link>
                         </li>
                     </ul>
-                    <ul
-                        v-else
-                        class="menu w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
-                    >
+                    <ul v-else class="menu">
                         <li class="dropdown-option">
                             <Link href="/login" class="btn btn-ghost gap-4">
                                 <i class="material-symbols-rounded"> login </i>
