@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\GenerateApplications;
 use App\Models\Job;
 use Illuminate\Http\Request;
+use App\Jobs\GenerateApplications;
 
 class JobController extends Controller
 {
@@ -17,7 +17,7 @@ class JobController extends Controller
         return inertia('Jobs/Index',[
             'jobs' => $all->clone()->latest()->paginate(12)->withQueryString(),
             'filters' => [
-                'title'     => $all->orderBy('title')->pluck('title'),
+                'title'     => array_values($all->orderBy('title')->pluck('title')->unique()->toArray()),
                 'cities'    => array_values($all->get()->pluck('company.city')->unique()->sort()->toArray()),
                 'companies' => array_values($all->get()->pluck('company.name')->unique()->sort()->toArray()),
                 'salaries'  => [

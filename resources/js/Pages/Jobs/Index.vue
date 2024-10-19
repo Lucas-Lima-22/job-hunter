@@ -1,22 +1,22 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
-import { useForm, Link } from '@inertiajs/vue3'
-import Job from '@/Components/Job.vue'
-import Pagination from '@/Components/Pagination.vue'
+import { computed, ref, watch, inject } from 'vue';
+import { useForm, Link } from '@inertiajs/vue3';
+import Job from '@/Components/Job.vue';
+import Pagination from '@/Components/Pagination.vue';
 
 const props = defineProps({
     jobs: Object,
     filters: Object,
     selected: Object,
-})
+});
 
 const pagination = computed(() => {
     return {
         links: props.jobs.links,
         current_page: props.jobs.current_page,
         last_page: props.jobs.last_page,
-    }
-})
+    };
+});
 
 const form = useForm({
     title: props.selected.title ?? [],
@@ -26,14 +26,15 @@ const form = useForm({
     schedules: props.selected.schedules ?? [],
     models: props.selected.models ?? [],
     tags: props.selected.tags ?? [],
-})
+});
 
-watch(form, () => form.get('/jobs'))
+watch(form, () => form.get('/jobs'), { once: true });
 
-const titleQuery = ref(null)
-const cityQuery = ref(null)
-const companyQuery = ref(null)
-const salaryRange = ref(props.selected.salaries ?? props.filters.salaries.min)
+const titleQuery = ref(null);
+const cityQuery = ref(null);
+const companyQuery = ref(null);
+const salaryRange = ref(props.selected.salaries ?? props.filters.salaries.min);
+const breakpoint = inject('breakpoint').greaterOrEqual('xl');
 
 const filtered = computed(() => {
     return {
@@ -56,8 +57,8 @@ const filtered = computed(() => {
                       .includes(companyQuery.value.toLowerCase())
               )
             : props.filters.companies,
-    }
-})
+    };
+});
 </script>
 <template>
     <Head>
@@ -69,7 +70,8 @@ const filtered = computed(() => {
         >
             <!-- LARGE SCREEN FILTER -->
             <div
-                class="hidden xl:block xl:h-fit xl:w-80 xl:overflow-hidden xl:rounded-box xl:border xl:border-base-content/10 xl:bg-base-100"
+                v-if="breakpoint"
+                class="h-fit w-80 overflow-hidden rounded-box border border-base-content/10 bg-base-100"
             >
                 <!-- TITLE FILTER -->
                 <div>
@@ -371,7 +373,7 @@ const filtered = computed(() => {
             </div>
         </div>
         <!-- DRAWER -->
-        <div class="drawer z-[2]">
+        <div v-if="!breakpoint" class="drawer z-[2]">
             <input id="my-drawer" type="checkbox" class="drawer-toggle" />
             <div class="drawer-side">
                 <label

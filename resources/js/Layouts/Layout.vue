@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { useTheme } from '@/Composables/useTheme';
 import { useDropdownContent } from '@/Composables/useDropdownContent';
@@ -9,7 +9,7 @@ const { theme, url } = useTheme();
 const user = computed(() => usePage().props.auth.user);
 const component = computed(() => usePage().component);
 const message = computed(() => usePage().props.message);
-
+const breakpoint = inject('breakpoint').greaterOrEqual('md');
 useDropdownContent(user);
 </script>
 
@@ -17,7 +17,7 @@ useDropdownContent(user);
     <div
         class="navbar sticky top-0 z-[2] justify-between bg-base-100/80 shadow backdrop-blur"
     >
-        <div class="dropdown md:hidden">
+        <div v-if="!breakpoint" class="dropdown">
             <div tabindex="0" role="button" class="btn btn-square">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -35,6 +35,7 @@ useDropdownContent(user);
                 </svg>
             </div>
             <ul
+                ref="el"
                 tabindex="0"
                 class="menu dropdown-content mt-4 w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
             >
@@ -88,7 +89,7 @@ useDropdownContent(user);
         </Link>
 
         <nav>
-            <div class="hidden md:flex">
+            <div v-if="breakpoint" class="flex">
                 <Link href="/" class="btn btn-ghost"> Home </Link>
                 <Link href="/jobs" class="btn btn-ghost"> Jobs </Link>
                 <Link href="/companies" class="btn btn-ghost"> Companies </Link>
