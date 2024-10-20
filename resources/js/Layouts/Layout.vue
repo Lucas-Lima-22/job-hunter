@@ -1,24 +1,41 @@
 <script setup>
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, watch } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { useTheme } from '@/Composables/useTheme';
-import { useDropdownContent } from '@/Composables/useDropdownContent';
+import { onClickOutside } from '@vueuse/core';
 import Notification from '@/Components/Notification.vue';
+
+const dropdownPages = ref(null);
+const showDropdownPages = ref(false);
+
+onClickOutside(dropdownPages, () => (showDropdownPages.value = false));
+
+const dropdownProfile = ref(null);
+const showDropdownProfile = ref(false);
+
+onClickOutside(dropdownProfile, () => (showDropdownProfile.value = false));
+
+watch(usePage(), () => {
+    showDropdownPages.value = false;
+    showDropdownProfile.value = false;
+});
 
 const { theme, url } = useTheme();
 const user = computed(() => usePage().props.auth.user);
 const component = computed(() => usePage().component);
 const message = computed(() => usePage().props.message);
 const breakpoint = inject('breakpoint').greaterOrEqual('md');
-useDropdownContent(user);
 </script>
 
 <template>
     <div
         class="navbar sticky top-0 z-[2] justify-between bg-base-100/80 shadow backdrop-blur"
     >
-        <div v-if="!breakpoint" class="dropdown">
-            <div tabindex="0" role="button" class="btn btn-square">
+        <div v-if="!breakpoint" class="relative" ref="dropdownPages">
+            <button
+                @click="showDropdownPages = !showDropdownPages"
+                class="btn btn-square"
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-5 w-5"
@@ -33,11 +50,10 @@ useDropdownContent(user);
                         d="M4 6h16M4 12h16M4 18h7"
                     />
                 </svg>
-            </div>
+            </button>
             <ul
-                ref="el"
-                tabindex="0"
-                class="menu dropdown-content mt-4 w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
+                v-if="showDropdownPages"
+                class="menu absolute top-16 w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
             >
                 <button class="btn mb-2">
                     <label class="swap swap-flip">
@@ -66,17 +82,17 @@ useDropdownContent(user);
                         </svg>
                     </label>
                 </button>
-                <li class="dropdown-option">
+                <li>
                     <Link href="/" class="btn btn-ghost">
                         <span class="flex-1 text-start">Home</span>
                     </Link>
                 </li>
-                <li class="dropdown-option">
+                <li>
                     <Link href="/jobs" class="btn btn-ghost">
                         <span class="flex-1 text-start">Jobs</span>
                     </Link>
                 </li>
-                <li class="dropdown-option">
+                <li>
                     <Link href="/companies" class="btn btn-ghost">
                         <span class="flex-1 text-start">Companies</span>
                     </Link>
@@ -124,10 +140,9 @@ useDropdownContent(user);
 
                 <div class="divider divider-horizontal mx-0 py-4" />
             </div>
-            <div class="dropdown dropdown-end sm:px-4">
-                <div
-                    tabindex="0"
-                    role="button"
+            <div class="relative" ref="dropdownProfile">
+                <button
+                    @click="showDropdownProfile = !showDropdownProfile"
                     class="mask mask-squircle size-12 bg-neutral"
                 >
                     <div v-if="user?.role_id === 1" class="size-full">
@@ -179,14 +194,14 @@ useDropdownContent(user);
                             />
                         </svg>
                     </div>
-                </div>
+                </button>
 
                 <div
-                    tabindex="0"
-                    class="dropdown-content mt-4 w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
+                    v-if="showDropdownProfile"
+                    class="absolute right-0 top-16 w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
                 >
                     <ul v-if="user?.role_id === 1" class="menu">
-                        <li class="dropdown-option">
+                        <li>
                             <Link
                                 :href="`/candidates/${user.candidate.id}`"
                                 class="btn btn-ghost gap-4"
@@ -199,10 +214,7 @@ useDropdownContent(user);
                                 </span>
                             </Link>
                         </li>
-                        <li
-                            class="dropdown-option"
-                            v-if="user.candidate.is_active"
-                        >
+                        <li v-if="user.candidate.is_active">
                             <Link
                                 :href="`/candidates/${user.candidate.id}/applications`"
                                 class="btn btn-ghost gap-4"
@@ -213,7 +225,7 @@ useDropdownContent(user);
                                 </span>
                             </Link>
                         </li>
-                        <li class="dropdown-option">
+                        <li>
                             <Link
                                 :href="`/users/${user.id}/edit`"
                                 class="btn btn-ghost gap-4"
@@ -226,7 +238,7 @@ useDropdownContent(user);
                                 </span>
                             </Link>
                         </li>
-                        <li class="dropdown-option">
+                        <li>
                             <Link
                                 href="/logout"
                                 as="button"
@@ -239,7 +251,7 @@ useDropdownContent(user);
                         </li>
                     </ul>
                     <ul v-else-if="user?.role_id === 2" class="menu">
-                        <li class="dropdown-option">
+                        <li>
                             <Link
                                 :href="`/companies/${user.company.id}`"
                                 class="btn btn-ghost gap-4"
@@ -253,10 +265,7 @@ useDropdownContent(user);
                             </Link>
                         </li>
 
-                        <li
-                            class="dropdown-option"
-                            v-if="user.company.is_active"
-                        >
+                        <li v-if="user.company.is_active">
                             <Link
                                 :href="`/companies/${user.company.id}/jobs`"
                                 class="btn btn-ghost gap-4"
@@ -267,10 +276,7 @@ useDropdownContent(user);
                                 </span>
                             </Link>
                         </li>
-                        <li
-                            class="dropdown-option"
-                            v-if="user.company.is_active"
-                        >
+                        <li v-if="user.company.is_active">
                             <Link
                                 :href="`/companies/${user.company.id}/applications`"
                                 class="btn btn-ghost gap-4"
@@ -281,7 +287,7 @@ useDropdownContent(user);
                                 </span>
                             </Link>
                         </li>
-                        <li class="dropdown-option">
+                        <li>
                             <Link
                                 :href="`/users/${user.id}/edit`"
                                 class="btn btn-ghost gap-4"
@@ -294,7 +300,7 @@ useDropdownContent(user);
                                 </span>
                             </Link>
                         </li>
-                        <li class="dropdown-option">
+                        <li>
                             <Link
                                 href="/logout"
                                 as="button"
@@ -307,13 +313,13 @@ useDropdownContent(user);
                         </li>
                     </ul>
                     <ul v-else class="menu">
-                        <li class="dropdown-option">
+                        <li>
                             <Link href="/login" class="btn btn-ghost gap-4">
                                 <i class="material-symbols-rounded"> login </i>
                                 <span class="flex-1 text-start"> Login </span>
                             </Link>
                         </li>
-                        <li class="dropdown-option">
+                        <li>
                             <Link href="/sign-up" class="btn btn-ghost gap-4">
                                 <i class="material-symbols-rounded">
                                     person_add
