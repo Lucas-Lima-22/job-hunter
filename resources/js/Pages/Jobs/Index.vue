@@ -584,6 +584,9 @@ const filtered = computed(() => {
                                 @mouseup="
                                     form.salaries = $event.currentTarget.value
                                 "
+                                @touchend="
+                                    form.salaries = $event.currentTarget.value
+                                "
                                 class="range range-sm"
                             />
                             <div class="flex justify-between">

@@ -52,36 +52,9 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
                 </svg>
             </button>
             <ul
-                v-if="showDropdownPages"
+                v-show="showDropdownPages"
                 class="menu absolute top-16 w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
             >
-                <button class="btn mb-2">
-                    <label class="swap swap-flip">
-                        <input
-                            type="checkbox"
-                            data-toggle-theme="light,dark"
-                            :checked="theme === 'dark'"
-                        />
-                        <svg
-                            class="swap-on size-5 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"
-                            />
-                        </svg>
-                        <svg
-                            class="swap-off size-5 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 -960 960 960"
-                        >
-                            <path
-                                d="M480-120q-151 0-255.5-104.5T120-480q0-138 90-239.5T440-838q13-2 23 3.5t16 14.5q6 9 6.5 21t-7.5 23q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q11-7 22.5-6.5T819-479q10 5 15.5 15t3.5 24q-14 138-117.5 229T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
-                            />
-                        </svg>
-                    </label>
-                </button>
                 <li>
                     <Link href="/" class="btn btn-ghost">
                         <span class="flex-1 text-start">Home</span>
@@ -140,7 +113,7 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
 
                 <div class="divider divider-horizontal mx-0 py-4" />
             </div>
-            <div class="relative" ref="dropdownProfile">
+            <div class="relative md:px-2" ref="dropdownProfile">
                 <button
                     @click="showDropdownProfile = !showDropdownProfile"
                     class="mask mask-squircle size-12 bg-neutral"
@@ -197,9 +170,36 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
                 </button>
 
                 <div
-                    v-if="showDropdownProfile"
-                    class="absolute right-0 top-16 w-48 rounded-box border border-base-content/10 bg-base-100 shadow-lg"
+                    v-show="showDropdownProfile"
+                    class="absolute right-0 top-16 w-48 overflow-hidden rounded-box border border-base-content/10 bg-base-100 shadow-lg"
                 >
+                    <button class="btn btn-block">
+                        <label class="swap swap-flip">
+                            <input
+                                type="checkbox"
+                                data-toggle-theme="light,dark"
+                                :checked="theme === 'dark'"
+                            />
+                            <svg
+                                class="swap-on size-5 fill-current"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"
+                                />
+                            </svg>
+                            <svg
+                                class="swap-off size-5 fill-current"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 -960 960 960"
+                            >
+                                <path
+                                    d="M480-120q-151 0-255.5-104.5T120-480q0-138 90-239.5T440-838q13-2 23 3.5t16 14.5q6 9 6.5 21t-7.5 23q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q11-7 22.5-6.5T819-479q10 5 15.5 15t3.5 24q-14 138-117.5 229T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
+                                />
+                            </svg>
+                        </label>
+                    </button>
                     <ul v-if="user?.role_id === 1" class="menu">
                         <li>
                             <Link
