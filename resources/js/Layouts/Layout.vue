@@ -31,6 +31,12 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
     <div
         class="navbar sticky top-0 z-[2] justify-between bg-base-100/80 shadow backdrop-blur"
     >
+        <input
+            type="checkbox"
+            data-toggle-theme="light,dark"
+            id="theme-toggle"
+            hidden
+        />
         <div v-if="!breakpoint" class="relative" ref="dropdownPages">
             <button
                 @click="showDropdownPages = !showDropdownPages"
@@ -70,6 +76,30 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
                         <span class="flex-1 text-start">Companies</span>
                     </Link>
                 </li>
+                <label for="theme-toggle" class="btn">
+                    <Transition mode="out-in" name="fade">
+                        <svg
+                            v-if="theme === 'dark'"
+                            class="size-5 fill-current"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 -960 960 960"
+                        >
+                            <path
+                                d="M480-120q-151 0-255.5-104.5T120-480q0-138 90-239.5T440-838q13-2 23 3.5t16 14.5q6 9 6.5 21t-7.5 23q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q11-7 22.5-6.5T819-479q10 5 15.5 15t3.5 24q-14 138-117.5 229T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
+                            />
+                        </svg>
+                        <svg
+                            v-else
+                            class="size-5 fill-current"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"
+                            />
+                        </svg>
+                    </Transition>
+                </label>
             </ul>
         </div>
 
@@ -83,15 +113,21 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
                 <Link href="/jobs" class="btn btn-ghost"> Jobs </Link>
                 <Link href="/companies" class="btn btn-ghost"> Companies </Link>
                 <div class="divider divider-horizontal mx-0 py-4" />
-                <button class="btn btn-square btn-ghost">
-                    <label class="swap swap-flip">
-                        <input
-                            type="checkbox"
-                            data-toggle-theme="light,dark"
-                            :checked="theme === 'dark'"
-                        />
+                <label for="theme-toggle" class="btn btn-square btn-ghost">
+                    <Transition mode="out-in" name="fade">
                         <svg
-                            class="swap-on size-5 fill-current"
+                            v-if="theme === 'dark'"
+                            class="size-5 fill-current"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 -960 960 960"
+                        >
+                            <path
+                                d="M480-120q-151 0-255.5-104.5T120-480q0-138 90-239.5T440-838q13-2 23 3.5t16 14.5q6 9 6.5 21t-7.5 23q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q11-7 22.5-6.5T819-479q10 5 15.5 15t3.5 24q-14 138-117.5 229T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
+                            />
+                        </svg>
+                        <svg
+                            v-else
+                            class="size-5 fill-current"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                         >
@@ -99,32 +135,23 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
                                 d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"
                             />
                         </svg>
-                        <svg
-                            class="swap-off size-5 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"
-                            />
-                        </svg>
-                    </label>
-                </button>
+                    </Transition>
+                </label>
 
                 <div class="divider divider-horizontal mx-0 py-4" />
             </div>
-            <div class="relative md:px-2" ref="dropdownProfile">
+            <div class="relative flex md:px-2" ref="dropdownProfile">
                 <button
                     @click="showDropdownProfile = !showDropdownProfile"
                     class="mask mask-squircle size-12 bg-neutral"
                 >
-                    <div v-if="user?.role_id === 1" class="size-full">
+                    <div v-if="user?.role_id === 1">
                         <img
                             v-if="user.candidate.avatar"
-                            class="size-full object-cover"
+                            class="object-cover"
                             :src="'/storage/' + user.candidate.avatar"
                         />
-                        <div v-else class="grid size-full place-items-center">
+                        <div v-else class="grid place-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 -960 960 960"
@@ -137,13 +164,13 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
                         </div>
                     </div>
 
-                    <div v-else-if="user?.role_id === 2" class="size-full">
+                    <div v-else-if="user?.role_id === 2">
                         <img
                             v-if="user.company.logo"
-                            class="size-full object-cover"
+                            class="object-cover"
                             :src="'/storage/' + user.company.logo"
                         />
-                        <div v-else class="grid size-full place-items-center">
+                        <div v-else class="grid place-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 -960 960 960"
@@ -156,7 +183,7 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
                         </div>
                     </div>
 
-                    <div v-else class="grid size-full place-items-center">
+                    <div v-else class="grid place-items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 -960 960 960"
@@ -173,33 +200,6 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
                     v-show="showDropdownProfile"
                     class="absolute right-0 top-16 w-48 overflow-hidden rounded-box border border-base-content/10 bg-base-100 shadow-lg"
                 >
-                    <button class="btn btn-block">
-                        <label class="swap swap-flip">
-                            <input
-                                type="checkbox"
-                                data-toggle-theme="light,dark"
-                                :checked="theme === 'dark'"
-                            />
-                            <svg
-                                class="swap-on size-5 fill-current"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"
-                                />
-                            </svg>
-                            <svg
-                                class="swap-off size-5 fill-current"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 -960 960 960"
-                            >
-                                <path
-                                    d="M480-120q-151 0-255.5-104.5T120-480q0-138 90-239.5T440-838q13-2 23 3.5t16 14.5q6 9 6.5 21t-7.5 23q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q11-7 22.5-6.5T819-479q10 5 15.5 15t3.5 24q-14 138-117.5 229T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
-                                />
-                            </svg>
-                        </label>
-                    </button>
                     <ul v-if="user?.role_id === 1" class="menu">
                         <li>
                             <Link
@@ -355,10 +355,8 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
     <main class="bg-base-200">
         <slot />
     </main>
-    <footer
-        class="grid h-40 place-items-center bg-neutral text-neutral-content"
-    >
-        <span> © 2024 Jobhunter. All rights reserved. </span>
+    <footer class="grid h-40 place-items-center bg-neutral">
+        <p>© 2024 Jobhunter. All rights reserved.</p>
     </footer>
     <Notification
         v-if="message"
@@ -369,5 +367,18 @@ const breakpoint = inject('breakpoint').greaterOrEqual('md');
 <style scoped>
 main {
     min-height: calc(100vh - 216px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition-property: opacity transform;
+    transition-duration: 150ms;
+    transition-timing-function: ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transform: scale(0);
 }
 </style>
